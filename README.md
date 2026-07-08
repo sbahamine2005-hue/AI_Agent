@@ -1,4 +1,4 @@
-# AGNET — LangGraph Agent with Neo4j Memory and Self-Correction
+# AGNET LangGraph Agent with Neo4j Memory and Self-Correction
 
 An autonomous AI agent built with LangGraph and LangChain that answers multi-domain queries by selecting and executing the right tool at runtime, evaluating its own output with a separate LLM judge, and looping back to correct itself if the answer does not meet the quality threshold. All conversation state is persisted to a Neo4j graph database, enabling the agent to retrieve and reason over its own past conversations as a native tool call.
 
