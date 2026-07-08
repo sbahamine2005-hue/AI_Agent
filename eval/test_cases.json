@@ -1,0 +1,212 @@
+[
+  {
+    "id": 101,
+    "query": "What is the weather in London right now?",
+    "expected_tool": "weather_check",
+    "expected_contains": ["temperature", "London"],
+    "category": "weather"
+  },
+  {
+    "id": 102,
+    "query": "What is the current temperature in Tokyo?",
+    "expected_tool": "weather_check",
+    "expected_contains": ["temperature", "Tokyo"],
+    "category": "weather"
+  },
+  {
+    "id": 103,
+    "query": "Is it raining in Paris right now?",
+    "expected_tool": "weather_check",
+    "expected_contains": ["Paris"],
+    "category": "weather"
+  },
+  {
+    "id": 104,
+    "query": "What is the weather like in New York City?",
+    "expected_tool": "weather_check",
+    "expected_contains": ["New York"],
+    "category": "weather"
+  },
+  {
+    "id": 105,
+    "query": "What is the humidity in Dubai today?",
+    "expected_tool": "weather_check",
+    "expected_contains": ["humidity", "Dubai"],
+    "category": "weather"
+  },
+  {
+    "id": 106,
+    "query": "What is the derivative of x^3 + 2x^2 - 5x + 1?",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["3x^2", "4x", "5"],
+    "category": "math"
+  },
+  {
+    "id": 107,
+    "query": "Solve the equation 2x^2 - 8x + 6 = 0",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["x = 1", "x = 3"],
+    "category": "math"
+  },
+  {
+    "id": 108,
+    "query": "What is the integral of sin(x) from 0 to pi?",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["2"],
+    "category": "math"
+  },
+  {
+    "id": 109,
+    "query": "What is 15% of 847?",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["127.05"],
+    "category": "math"
+  },
+  {
+    "id": 110,
+    "query": "What is the eigenvalue of the matrix [[2, 1], [1, 2]]?",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["1", "3"],
+    "category": "math"
+  },
+  {
+    "id": 111,
+    "query": "What is the limit of sin(x)/x as x approaches 0?",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["1"],
+    "category": "math"
+  },
+  {
+    "id": 112,
+    "query": "Expand (x + y)^4",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["x^4", "4x^3 y", "6x^2 y^2"],
+    "category": "math"
+  },
+  {
+    "id": 113,
+    "query": "What is the latest news about artificial intelligence today?",
+    "expected_tool": "tavily_search_results_json",
+    "expected_contains": ["AI", "artificial intelligence"],
+    "category": "search"
+  },
+  {
+    "id": 114,
+    "query": "Who won the most recent Champions League final?",
+    "expected_tool": "tavily_search_results_json",
+    "expected_contains": ["Champions League"],
+    "category": "search"
+  },
+  {
+    "id": 115,
+    "query": "What is the current price of Bitcoin?",
+    "expected_tool": "tavily_search_results_json",
+    "expected_contains": ["Bitcoin", "$"],
+    "category": "search"
+  },
+  {
+    "id": 116,
+    "query": "What are the latest developments in the Gaza conflict?",
+    "expected_tool": "tavily_search_results_json",
+    "expected_contains": ["Gaza"],
+    "category": "search"
+  },
+  {
+    "id": 117,
+    "query": "What is OpenAI's most recent model release?",
+    "expected_tool": "tavily_search_results_json",
+    "expected_contains": ["OpenAI"],
+    "category": "search"
+  },
+  {
+    "id": 118,
+    "query": "What is the weather in Rabat right now?",
+    "expected_tool": "query_conversation_graph",
+    "expected_contains": ["weather"],
+    "category": "memory"
+  },
+  {
+    "id": 119,
+    "query": "What did I ask about weather before?",
+    "expected_tool": "query_conversation_graph",
+    "expected_contains": ["math", "conversation"],
+    "category": "memory"
+  },
+  {
+    "id": 120,
+    "query": "What topics did I search for in past sessions?",
+    "expected_tool": "query_conversation_graph",
+    "expected_contains": ["thread"],
+    "category": "memory"
+  },
+  {
+    "id": 121,
+    "query": "What is the capital of France?",
+    "expected_tool": "model_only",
+    "expected_contains": ["Paris"],
+    "category": "general_knowledge"
+  },
+  {
+    "id": 122,
+    "query": "What is the speed of light?",
+    "expected_tool": "model_only",
+    "expected_contains": ["299", "light"],
+    "category": "general_knowledge"
+  },
+  {
+    "id": 123,
+    "query": "Who wrote the book 1984?",
+    "expected_tool": "model_only",
+    "expected_contains": ["Orwell"],
+    "category": "general_knowledge"
+  },
+  {
+    "id": 124,
+    "query": "What is the weather in an invalid city called XYZ123?",
+    "expected_tool": "weather_check",
+    "expected_contains": ["Error", "not found"],
+    "category": "edge_case"
+  },
+  {
+    "id": 125,
+    "query": "Solve x/0 = 5",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["undefined", "no solution", "division"],
+    "category": "edge_case"
+  },
+  {
+    "id": 126,
+    "query": "What is the weather in Cairo and also solve x^2 = 16?",
+    "expected_tool": "weather_check",
+    "expected_contains": ["Cairo", "4"],
+    "category": "multi_intent"
+  },
+  {
+    "id": 127,
+    "query": "Search for the latest LangGraph updates",
+    "expected_tool": "tavily_search_results_json",
+    "expected_contains": ["LangGraph", "LangChain"],
+    "category": "search"
+  },
+  {
+    "id": 128,
+    "query": "What is 2 + 2?",
+    "expected_tool": "model_only",
+    "expected_contains": ["4"],
+    "category": "math_simple"
+  },
+  {
+    "id": 129,
+    "query": "Calculate the Taylor series expansion of e^x around x=0 up to the 4th term",
+    "expected_tool": "universal_math_solver",
+    "expected_contains": ["x^2", "x^3", "x^4"],
+    "category": "math"
+  },
+  {
+    "id": 130,
+    "query": "What is the weather in Casablanca Morocco?",
+    "expected_tool": "weather_check",
+    "expected_contains": ["Casablanca", "temperature"],
+    "category": "weather"
+  }
+]
