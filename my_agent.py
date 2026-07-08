@@ -137,15 +137,7 @@ my_tools = [search_tool, weather_check, universal_math_solver, query_conversatio
 #starting our LLM
 llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0, groq_api_key=groq_api_key).bind_tools(my_tools)
 
-print("the llm working fine")
-
-
-#####################################################################################################################################
-############################################ THE SELF CORECTION LOOP USING STANDER LOOP  ############################################
-
-
-
-
+print("the llm is working !!!")
 #####################################################################################################################################
 ############################################ THE SELF CORECTION LOOP USING THE LANGGRAPH ############################################ 
 class AgentState(TypedDict):
