@@ -199,12 +199,7 @@ validation_chain = validation_promt | groq_model_2 | JsonOutputParser()
 
 def llm_call(state: AgentState)-> dict:
     """Initial LLM attempt."""
-    """
-    - Fix #5: fallback to 'query' if 'current_query' not yet set
-    - Fix #2: wrap in HumanMessage list for correct input type
-    - Fix #4: execute tools if the LLM requests them
-    - Fix #3: always store plain string in state["messages"]
-    """
+    
     # Fix #5 — safe query resolution
     query = state.get("current_query") or state["query"]
 
