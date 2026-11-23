@@ -65,16 +65,12 @@ def universal_math_solver(query: str) -> str:
         return "Error: Wolfram|Alpha client is not configured. Missing AppID."
     
     try:
-        # 1. Fire the query to the engine
         res = wolfram_client.query(query)
         
-        # Handle cases where Wolfram didn't understand the input at all
         if getattr(res, "success", "false") == "false" or not hasattr(res, "pods"):
             return "Error: The mathematical query could not be resolved by the engine."
             
         output_lines = []
-        
-        # 2. Production Loop: Extract data dynamically without hardcoding math terms
         for pod in res.pods:
             # Always capture the primary answer pod if Wolfram explicitly flags it
             if pod.primary:
@@ -199,14 +195,9 @@ validation_chain = validation_promt | groq_model_2 | JsonOutputParser()
 
 def llm_call(state: AgentState)-> dict:
     """Initial LLM attempt."""
-    
-    # Fix #5 — safe query resolution
+
     query = state.get("current_query") or state["query"]
-
-    # Fix #2 — correct input type
     response = llm.invoke([HumanMessage(content=query)])
-
-    # Fix #4 — actually execute tools if requested
     if response.tool_calls:
         tool_node = ToolNode(tools=my_tools)
         tool_results = tool_node.invoke({"messages": [response]})
@@ -215,17 +206,14 @@ def llm_call(state: AgentState)-> dict:
         # build full conversation history for final synthesis
         full_messages = [
             HumanMessage(content=query),
-            response,                        # AIMessage with tool_calls
-            *tool_results["messages"]        # ToolMessage(s) with results
+            response,                        
+            *tool_results["messages"]        
         ]
 
-        # let the LLM synthesize a final answer from tool output
         final_response = llm_synthesizer.invoke(full_messages)
 
-        # Fix #3 — store plain string
         return {"messages": final_response.content, "tool_used": tool_used}
 
-    # Fix #3 — no tool call, still store plain string
     return {"messages": response.content, "tool_used": "model_only"}
 
 def validation_node(state: AgentState)-> dict:
@@ -296,16 +284,10 @@ builder.add_conditional_edges(
 )
 builder.add_edge("reformulation_node", "llm_call")
 
-# create the driver manually
 driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
 
-# create checkpointer directly from the driver
 checkpointer = Neo4jSaver(driver, database=NEO4J_DATABASE)
-
-# setup and compile
 checkpointer.setup()
-
-#and now compilate with the langgraph checkpointer
 graph = builder.compile(checkpointer= checkpointer)
 
 #now let's create a configurable so each conversation have a unique thread
@@ -351,58 +333,3 @@ my_configuration = {'configurable':{"thread_id": str(uuid.uuid4())}}
 
     
 
-"""
-Validator returns: { score: 0-10, passed: bool, critique: "Missing X, hallucinated Y" }
-Next attempt gets: original query + previous answer + critique
-
-Score on: relevance, groundedness, completeness, tool usage correctness
-"""
-
-
-
-
-
-
-
-
-"""
-#nwo let's builde the mean core that will structer the user query
-class SearchQuery(BaseModel):
-    search_query : str=Field(None, description="Query that optimize web search") 
-    jsutifucation : str = Field(None, json_schema_extra={"justification": "Why this query is relevant to the user's request."})
-
-structer_llm = llm.with_structured_output(SearchQuery)
-"""
-"""#now let's test that 
-respons = structer_llm.invoke("How does Calcium CT score relate to high cholesterol?")
-tru_respons = llm.invoke("How does Calcium CT score relate to high cholesterol?")
-print(respons)
-print("\n", tru_respons.content)
-print("\n",respons.search_query)
-print("\n",respons.jsutifucation)"""
-"""graph = my_builder.compile()
-
-respons = graph.invoke({"query":"How does Calcium CT score relate to high cholesterol?"})
-print(respons['response'])"""
-
-
-"""
-user_input = {"messages": [HumanMessage(content="Can you check if this equation holds true: \(\int _{-\infty }^{\infty }e^{-x^{2}}\,dx=\sqrt{\pi }\)?")]}
-    response = graph.invoke(user_input, config=my_configuration)
-    ##########################################################""
-    # 2. Get the last two messages
-    all_messages = response["messages"]
-    final_answer = all_messages[-1].content
-    previous_message = all_messages[-2]
-
-    # 3. Check if the previous message was a tool result
-    # (LangChain wraps tool outputs in a specific 'ToolMessage' class)
-    if previous_message.type == "tool":
-        # Extract the actual name of the tool from the ToolMessage object
-        tool_name = getattr(previous_message, "name", "Unknown Tool")
-        print(f"Tool Used: The model successfully called '{tool_name}'!")
-    else:
-        print("Model Only: The model answered directly from its own knowledge.")
-
-    print(f"\nAnswer:\n{final_answer}")
-"""
