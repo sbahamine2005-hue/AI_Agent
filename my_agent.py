@@ -78,14 +78,11 @@ def universal_math_solver(query: str) -> str:
                 if primary_text:
                     return f"Result ({pod.title}): {primary_text}"
             
-            # Fallback collection: gathering context just in case 'primary' isn't flagged
             for subpod in pod.subpods:
                 if subpod.plaintext:
                     output_lines.append(f"{pod.title}: {subpod.plaintext}")
                     
-        # 3. Smart Fallback: If no single 'primary' pod was flagged, return the top clear data points
         if output_lines:
-            # Return the first 3 relevant mathematical breakdowns (e.g., Input, Result, Plot data)
             return "\n".join(output_lines[:3])
             
         return "Calculation completed, but no text-based result could be extracted."
